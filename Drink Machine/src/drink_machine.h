@@ -24,10 +24,23 @@ struct drink_machine
 } typedef DrinkMachine;
 
 
-// Functions for the struct
+// Functions for this struct
+
+//Creates and initializes the machine with data from an input file
 DrinkMachine * createMachine();
 
+//Frees the memory allocated to the drinks in it and then to the machine itself
 void destroyMachine(DrinkMachine * targetMachine);
+
+//Returns address of the first drink. Returns null if zero drinks.
+DrinkItem * firstDrink(DrinkMachine *);
+
+//Returns the address of the next drink and returns null when there is no next item.
+DrinkItem * nextDrink(DrinkMachine *);
+
+
+
+
 
 
 #endif /* DRINK_MACHINE_H_ */

@@ -20,6 +20,7 @@ DrinkMachine * createMachine()
 	// Initializing version and current item
 	theMachine->version = 1;
 	theMachine->currentItem = INVALID_INDEX;
+	theMachine->numberOfDrinkItems = 0;
 
 	// Opening a file to read from and initialize numberOfdrinks and create the drinksArray
 	char * fileName = (char *) malloc(50);
@@ -50,7 +51,14 @@ DrinkMachine * createMachine()
 	fscanf(inputFile, "%d", &numberOfDrinkOptions);
 	theMachine->numberOfDrinkItems = numberOfDrinkOptions;
 
-	theMachine->drinksArray = (DrinkItem *) malloc((theMachine->numberOfDrinkItems) * sizeof(DrinkItem));
+	if(numberOfDrinkOptions < 1)
+	{
+		theMachine->drinksArray = NULL;
+	}
+	else
+	{
+		theMachine->drinksArray = (DrinkItem *) malloc((theMachine->numberOfDrinkItems) * sizeof(DrinkItem));
+	}
 
 	//Drink initialization loop
 	for(int i = 0; i < theMachine->numberOfDrinkItems; ++i)
@@ -83,5 +91,46 @@ void destroyMachine(DrinkMachine * targetMachine)
 	free(targetMachine);
 	printf("The machine was successfully destroyed \n");
 	fflush(stdout);
+}
+
+DrinkItem * firstDrink(DrinkMachine * theMachine)
+{
+	if(theMachine->drinksArray == NULL)
+	{
+		theMachine->currentItem = INVALID_INDEX;
+		return NULL;
+	}
+	else
+	{
+		theMachine->currentItem = 0;
+		// Returning memory address of first byte of the array so we get first element. No subscript access
+		return theMachine->drinksArray;
+	}
+
+}
+
+//Assumes back to back storage locations in memory
+DrinkItem * nextDrink(DrinkMachine * theMachine)
+{
+	if(theMachine->currentItem == INVALID_INDEX)
+	{
+		printf("firstDrink() was not called to reset the current drink \n");
+		fflush(stdout);
+		return NULL;
+	}
+	//currentItem starts at 0, numberOfDrinkItems starts at 1, so I put (currentItem + 1) to test it properly
+	else if( (theMachine->currentItem + 1) < (theMachine->numberOfDrinkItems) )
+	{
+		// Returns current drink item using pointer arithmetics to avoid using subscripts in case container type changes
+		++(theMachine->currentItem);
+		return ( (theMachine->drinksArray) + (theMachine->currentItem) );
+	}
+	else
+	{
+		theMachine->currentItem = INVALID_INDEX;
+		printf("No more items for next() to return\n");
+		fflush(stdout);
+		return NULL;
+	}
 }
 
