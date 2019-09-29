@@ -17,6 +17,7 @@ struct drink_machine
 {
 	int version;
 	int numberOfDrinkItems;
+	// Debug: see what type the array should be
 	DrinkItem * drinksArray;
 	int currentItem;
 

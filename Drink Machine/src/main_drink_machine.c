@@ -14,7 +14,7 @@
 #include <stdlib.h>
 
 
-
+/*
 int main(void)
 {
 	DrinkMachine * theMachine = createMachine();
@@ -24,3 +24,5 @@ int main(void)
 
 	// free machine memory allocation, and the array in it
 }
+
+*/
