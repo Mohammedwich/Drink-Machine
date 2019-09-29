@@ -17,15 +17,13 @@ struct drink_machine
 {
 	int version;
 	int numberOfDrinkItems;
-	DrinkItem * drinksArray[];
-	DrinkItem * currentItem;
+	DrinkItem * drinksArray;
+	int currentItem;
 
 } typedef DrinkMachine;
 
 
-const int INVALID_INDEX = 1;
-int numberOfDrinkOptions = 0;
-
+// Functions for the struct
 DrinkMachine * createMachine();
 
 void destroyMachine(DrinkMachine * targetMachine);

@@ -15,7 +15,7 @@ struct drink_item
 {
 	int id;
 	char * name;
-	double price;
+	float price;
 	int cansRemaining;
 	int purchaseCount;
 

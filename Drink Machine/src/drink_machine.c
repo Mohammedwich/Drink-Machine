@@ -9,21 +9,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// These are defined in the drink_machine.h file
-// const int INVALID_INDEX = 1;
-// int numberOfDrinkOptions = 0;
+const int INVALID_INDEX = -1;
+int numberOfDrinkOptions = 0;
 
 DrinkMachine * createMachine()
 {
 	//Allocating the DrinkMachine struct
-	DrinkMachine * theMachine = malloc(sizeof(DrinkMachine));
+	DrinkMachine * theMachine = (DrinkMachine *) malloc(sizeof(DrinkMachine));
 
 	// Initializing version and current item
 	theMachine->version = 1;
 	theMachine->currentItem = INVALID_INDEX;
 
 	// Opening a file to read from and initialize numberOfdrinks and create the drinksArray
-	char * fileName;
+	char * fileName = (char *) malloc(50);
 
 	printf("Enter the file name of the file with drinks data: ");
 	scanf("%s", fileName);
@@ -41,21 +40,20 @@ DrinkMachine * createMachine()
 
 
 	//Creating and initializing drink array and the drinks in it
-	fscanf("%d", theMachine->numberOfDrinkItems);
-	numberOfDrinkOptions = theMachine->numberOfDrinkItems;
+	fscanf(inputFile, "%d", &numberOfDrinkOptions);
+	theMachine->numberOfDrinkItems = numberOfDrinkOptions;
 
-	theMachine->drinksArray = malloc(theMachine->numberOfDrinkItems);
+	theMachine->drinksArray = (DrinkItem *) malloc((theMachine->numberOfDrinkItems) * sizeof(DrinkItem));
 
 	for(int i = 0; i < theMachine->numberOfDrinkItems; ++i)
 	{
-		theMachine->drinksArray[i] = malloc(sizeof(DrinkItem));
 
-		theMachine->drinksArray[i]->id = (i+1);
-		theMachine->drinksArray[i]->purchaseCount = 0;
+		theMachine->drinksArray[i].id = (i+1);
+		theMachine->drinksArray[i].purchaseCount = 0;
 
-		//Initializing drinks
-		fscanf("%s %.2f %d", theMachine->drinksArray[i]->name, theMachine->drinksArray[i]->price,
-				theMachine->drinksArray[i]->cansRemaining);
+		//Debug: see if the name was properly set
+		fscanf(inputFile, "%s %f %d", (theMachine->drinksArray[i].name), &(theMachine->drinksArray[i].price),
+				&(theMachine->drinksArray[i].cansRemaining) );
 	}
 
 	fclose(inputFile);
@@ -68,7 +66,7 @@ void destroyMachine(DrinkMachine * targetMachine)
 	//freeing all the poor drinks before destroying the machine
 	for(int i = 0; i < targetMachine->numberOfDrinkItems; ++i)
 	{
-		free(targetMachine->drinksArray[i]);
+		free(targetMachine->drinksArray[i].name);
 	}
 
 	free(targetMachine);
