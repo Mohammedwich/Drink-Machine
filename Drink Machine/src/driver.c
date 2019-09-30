@@ -8,6 +8,7 @@
  ============================================================================
  */
 
+/*
 #include "drink_item.h"
 #include "drink_machine.h"
 #include <stdio.h>
@@ -15,9 +16,11 @@
 
 
 
+
 int main(void)
 {
-	printf("We are at the start of driver now \n");
+	//Debug statement
+	printf("We are at the start of driver.c now \n");
 	fflush(stdout);
 
 	DrinkMachine * theMachine = createMachine();
@@ -30,15 +33,15 @@ int main(void)
 	}
 
 
+
+
 	// Calling nextDrink without having called firstDrink. Pointer will be nulled by nextDrink() so no need to free it
-	// Ignore "unused variable" warning. This only exists to catch the return from nextDrink.
-/*
-	DrinkItem * nextWithoutFirst = nextDrink(theMachine);
-*/
+	nextDrink(theMachine);
+	DrinkItem * nextOnLastItem = NULL;
+
 
 	//nextDrink is called at the end of the loop after last entry has been retrieved. It should return null and display a
 	// message stating there are no more items.
-/*
 	for ( DrinkItem * drinkPointer = firstDrink(theMachine); drinkPointer != NULL; drinkPointer = nextDrink(theMachine) )
 	{
 		int drinkID = drinkPointer->id;
@@ -50,8 +53,20 @@ int main(void)
 		printf("DrinkID: %d\tName: %s\tPrice: %.2f\tCans Remaining: %d\t Amount Purchased: %d\n", drinkID, name, price,
 				cansRemaining, purchaseCount);
 		fflush(stdout);
+
+		nextOnLastItem = drinkPointer;
 	}
+
+	printf("This is the address of a pointer on the last DrinkItem: %p \n", nextOnLastItem);
+	nextDrink(theMachine);
+	if(theMachine->currentItem == -1)
+	{
+		nextOnLastItem = NULL;
+	}
+	printf("This is its address after calling nextDrink() when there is no next item. Should be NULL: %p\n\n", nextOnLastItem);
+
 */
+
 
 	//Testing the rest of the functions
 /*
@@ -66,13 +81,15 @@ int main(void)
 
 
 
+/*
 
 	//Test this function. Should return a success message if it worked.
+
 	destroyMachine(theMachine);
+
 
 
 	return EXIT_SUCCESS;
 
-	// free machine memory allocation, and the array in it
 }
-
+*/

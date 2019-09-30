@@ -77,7 +77,7 @@ DrinkMachine * createMachine()
 
 	fclose(inputFile);
 
-	printf("The machine was successfully created \n");
+	printf("The machine was successfully created \n\n");
 	fflush(stdout);
 	return theMachine;
 }
@@ -91,7 +91,7 @@ void destroyMachine(DrinkMachine * targetMachine)
 	}
 
 	free(targetMachine);
-	printf("The machine was successfully destroyed \n");
+	printf("The machine was successfully destroyed \n\n");
 	fflush(stdout);
 }
 
@@ -130,14 +130,11 @@ DrinkItem * nextDrink(DrinkMachine * theMachine)
 	else
 	{
 		theMachine->currentItem = INVALID_INDEX;
-		printf("No more items for next() to return\n");
+		//printf("End of item list\n\n"); //Debug test code
 		fflush(stdout);
 		return NULL;
 	}
 }
-
-
-
 
 
 
@@ -206,7 +203,7 @@ int purchase(DrinkMachine * theMachine, int id, float money, float * changeOrCos
 		(*changeOrCost) = theMachine->drinksArray[id - 1].price;
 		return INSUFFICIENT_FUNDS;
 	}
-	else if(money > theMachine->drinksArray[id - 1].price)
+	else if(money >= theMachine->drinksArray[id - 1].price)
 	{
 		(*changeOrCost) = money - theMachine->drinksArray[id - 1].price;
 		--(theMachine->drinksArray[id - 1].cansRemaining);
@@ -239,6 +236,8 @@ void dumpDrinkMachine(DrinkMachine * theMachine)
 			printf("%3d\t%12s\t%5.2f\t%4d\t%4d\n", drinkID, name, price, cansRemaining, purchaseCount);
 			fflush(stdout);
 		}
+	printf("\n");
+	fflush(stdout);
 }
 
 

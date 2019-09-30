@@ -49,8 +49,8 @@ int available(DrinkMachine *, int);
 //Returns price of the drink, or -1 if drink ID is invalid
 float cost(DrinkMachine *, int);
 
-// Arguments (drinkMachine *, itemID, moneyInputed, change/itemPrice(if insufficient funds) passed by ref), also defaults changeOrCost to 0
-// Returns -2 if some error happens
+// Arguments (drinkMachine *, itemID, moneyInputed, change/itemPrice(if insufficient funds) passed by ref)
+//Returns -2 if some error happens
 int purchase(DrinkMachine *, int, float, float *);
 
 //Displays the contents of the drinks in the machine
