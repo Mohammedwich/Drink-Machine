@@ -1,9 +1,16 @@
-/*
- * drink_machine.h
- *
- *  Created on: Sep 28, 2019
- *      Author: Mohax
- */
+//============================================================================
+// Name			: drink_machine.h
+// Author		: Mohammed Ahmed
+// Course		: UTDallas CS 1337.502 F19
+// Version		: 1.0
+// Copyright	: 2019
+//
+// Description :
+// A program that simulates a soft-drink machine. fflush(stdout) calls were placed all around to find invisible crash causes.
+// Return code -2 usually means a function faced some kind of error. Functions are declared in the drink_machine.h file
+// since they operate on DrinkMachine objects. They are defined in the drink_machine.c file.
+//
+//============================================================================
 
 #ifndef DRINK_MACHINE_H_
 #define DRINK_MACHINE_H_
@@ -19,11 +26,10 @@ struct drink_machine
 {
 	int version;
 	int numberOfDrinkItems;
-	// Debug: see what type the array should be
 	DrinkItem * drinksArray;
 	int currentItem;
 
-} typedef DrinkMachine;
+} typedef DrinkMachine;	// typedef to avoid having to use struct tag
 
 
 // Functions for this struct
@@ -47,11 +53,11 @@ int items(DrinkMachine *);
 int available(DrinkMachine *, int);
 
 //Returns price of the drink, or -1 if drink ID is invalid
-float cost(DrinkMachine *, int);
+double cost(DrinkMachine *, int);
 
 // Arguments (drinkMachine *, itemID, moneyInputed, change/itemPrice(if insufficient funds) passed by ref)
 //Returns -2 if some error happens
-int purchase(DrinkMachine *, int, float, float *);
+int purchase(DrinkMachine *, int, double, double *);
 
 //Displays the contents of the drinks in the machine
 void dumpDrinkMachine(DrinkMachine *);

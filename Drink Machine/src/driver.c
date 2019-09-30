@@ -1,12 +1,16 @@
-/*
- ============================================================================
- Name        : Drink.c
- Author      :
- Version     :
- Copyright   : Your copyright notice
- Description : Hello World in C, Ansi-style
- ============================================================================
- */
+//============================================================================
+// Name			: driver.c
+// Author		: Mohammed Ahmed
+// Course		: UTDallas CS 1337.502 F19
+// Version		: 1.0
+// Copyright	: 2019
+//
+// Description :
+// A program that simulates a soft-drink machine. fflush(stdout) calls were placed all around to find invisible crash causes.
+// Return code -2 usually means a function faced some kind of error. Functions are declared in the drink_machine.h file
+// since they operate on DrinkMachine objects. They are defined in the drink_machine.c file.
+//
+//============================================================================
 
 /*
 #include "drink_item.h"
@@ -46,11 +50,11 @@ int main(void)
 	{
 		int drinkID = drinkPointer->id;
 		char * name = drinkPointer->name;
-		float price = drinkPointer->price;
+		double price = drinkPointer->price;
 		int cansRemaining = drinkPointer->cansRemaining;
 		int purchaseCount = drinkPointer->purchaseCount;
 
-		printf("DrinkID: %d\tName: %s\tPrice: %.2f\tCans Remaining: %d\t Amount Purchased: %d\n", drinkID, name, price,
+		printf("DrinkID: %d\tName: %s\tPrice: %.2lf\tCans Remaining: %d\t Amount Purchased: %d\n", drinkID, name, price,
 				cansRemaining, purchaseCount);
 		fflush(stdout);
 
@@ -73,9 +77,9 @@ int main(void)
 	dumpDrinkMachine(theMachine);
 	int choices = items(theMachine);
 	int isAvailable = available(theMachine, 7); // value 2 if available
-	float price = cost(theMachine, 7);
+	double price = cost(theMachine, 7);
 	//should output "8  2  1.30"
-	printf("\n%d  %d  %.2f \n", choices, isAvailable, price);
+	printf("\n%d  %d  %.2lf \n", choices, isAvailable, price);
 	fflush(stdout);
 */
 

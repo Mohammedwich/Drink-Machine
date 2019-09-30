@@ -1,19 +1,28 @@
-/*
- * drink_machine.c
- *
- *  Created on: Sep 29, 2019
- *      Author: Mohax
- */
+//============================================================================
+// Name			: drink_machine.c
+// Author		: Mohammed Ahmed
+// Course		: UTDallas CS 1337.502 F19
+// Version		: 1.0
+// Copyright	: 2019
+//
+// Description :
+// A program that simulates a soft-drink machine. fflush(stdout) calls were placed all around to find invisible crash causes.
+// Return code -2 usually means a function faced some kind of error. Functions are declared in the drink_machine.h file
+// since they operate on DrinkMachine objects. They are defined in the drink_machine.c file.
+//
+//============================================================================
 
+#include "drink_item.h"
 #include "drink_machine.h"
 #include "DrinkAvailabilityEnum.h"
 #include "PurchaseEnum.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-const int INVALID_INDEX = -1;
-int numberOfDrinkOptions = 0;
+const int INVALID_INDEX = -1;	//Used to set currentItem
+int numberOfDrinkOptions = 0;	//Used to hold the number of items after reading it from file, in case it is needed.
 
+//Creates and initializes the machine with data from an input file
 DrinkMachine * createMachine()
 {
 	//Allocating the DrinkMachine struct
@@ -53,6 +62,7 @@ DrinkMachine * createMachine()
 	fscanf(inputFile, "%d", &numberOfDrinkOptions);
 	theMachine->numberOfDrinkItems = numberOfDrinkOptions;
 
+	//Set drinksArray to NULL to check if it is empty later
 	if(numberOfDrinkOptions < 1)
 	{
 		theMachine->drinksArray = NULL;
@@ -70,21 +80,24 @@ DrinkMachine * createMachine()
 
 		//Debug: see if the name was properly set. Try to malloc then realloc
 		theMachine->drinksArray[i].name = (char *) malloc(100);
-		fscanf(inputFile, "%s %f %d", (theMachine->drinksArray[i].name), &(theMachine->drinksArray[i].price),
+		fscanf(inputFile, "%s %lf %d", (theMachine->drinksArray[i].name), &(theMachine->drinksArray[i].price),
 				&(theMachine->drinksArray[i].cansRemaining) );
 
 	}
 
+	//Done with the file
 	fclose(inputFile);
 
+	//Success message to indicate the machine was created
 	printf("The machine was successfully created \n\n");
 	fflush(stdout);
 	return theMachine;
 }
 
+//Frees allocated memory
 void destroyMachine(DrinkMachine * targetMachine)
 {
-	//freeing all the poor drinks before destroying the machine
+	//freeing all the poor drinks before freeing the machine's allocated memory
 	for(int i = 0; i < targetMachine->numberOfDrinkItems; ++i)
 	{
 		free(targetMachine->drinksArray[i].name);
@@ -95,6 +108,7 @@ void destroyMachine(DrinkMachine * targetMachine)
 	fflush(stdout);
 }
 
+//Return the address of the first DrinkItem in the machine if the machine's drinkArray is not empty. If empty returns null.
 DrinkItem * firstDrink(DrinkMachine * theMachine)
 {
 	if(theMachine->drinksArray == NULL)
@@ -105,6 +119,7 @@ DrinkItem * firstDrink(DrinkMachine * theMachine)
 	else
 	{
 		theMachine->currentItem = 0;
+
 		// Returning memory address of first byte of the array so we get first element. No subscript access
 		return theMachine->drinksArray;
 	}
@@ -114,6 +129,7 @@ DrinkItem * firstDrink(DrinkMachine * theMachine)
 //Assumes back to back storage locations in memory
 DrinkItem * nextDrink(DrinkMachine * theMachine)
 {
+	//Needs firstDrink() to set the firstItem before this can iterate
 	if(theMachine->currentItem == INVALID_INDEX)
 	{
 		printf("firstDrink() was not called to reset the current drink \n");
@@ -168,7 +184,7 @@ int available(DrinkMachine * theMachine, int id)
 }
 
 //Returns price of the drink, or -1 if drink ID is invalid. Returns -2 if an error happens
-float cost(DrinkMachine * theMachine, int id)
+double cost(DrinkMachine * theMachine, int id)
 {
 	if( (id < 1) || (id > theMachine->numberOfDrinkItems) )	//Invalid ID
 	{
@@ -188,7 +204,7 @@ float cost(DrinkMachine * theMachine, int id)
 
 // Arguments (drinkMachine *, itemID, moneyInputed, change/itemPrice(if insufficient funds))
 // Returns -2 if some error happens
-int purchase(DrinkMachine * theMachine, int id, float money, float * changeOrCost)
+int purchase(DrinkMachine * theMachine, int id, double money, double * changeOrCost)
 {
 	if( (id < 1) || (id > theMachine->numberOfDrinkItems) )	//Invalid ID
 	{
@@ -229,11 +245,11 @@ void dumpDrinkMachine(DrinkMachine * theMachine)
 		{
 			int drinkID = drinkPointer->id;
 			char * name = drinkPointer->name;
-			float price = drinkPointer->price;
+			double price = drinkPointer->price;
 			int cansRemaining = drinkPointer->cansRemaining;
 			int purchaseCount = drinkPointer->purchaseCount;
 
-			printf("%3d\t%12s\t%5.2f\t%4d\t%4d\n", drinkID, name, price, cansRemaining, purchaseCount);
+			printf("%3d\t%12s\t%5.2lf\t%4d\t%4d\n", drinkID, name, price, cansRemaining, purchaseCount);
 			fflush(stdout);
 		}
 	printf("\n");

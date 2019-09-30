@@ -1,12 +1,16 @@
-/*
- ============================================================================
- Name        : Drink.c
- Author      : 
- Version     :
- Copyright   : Your copyright notice
- Description : Hello World in C, Ansi-style
- ============================================================================
- */
+//============================================================================
+// Name			: drinkMachineDriver.c
+// Author		: Mohammed Ahmed
+// Course		: UTDallas CS 1337.502 F19
+// Version		: 1.0
+// Copyright	: 2019
+//
+// Description :
+// A program that simulates a soft-drink machine. fflush(stdout) calls were placed all around to find invisible crash causes.
+// Return code -2 usually means a function faced some kind of error. Functions are declared in the drink_machine.h file
+// since they operate on DrinkMachine objects. They are defined in the drink_machine.c file.
+//
+//============================================================================
 
 #include "drink_item.h"
 #include "drink_machine.h"
@@ -38,13 +42,13 @@ int main(void)
 	do
 	{
 		int choice = -1;
-		float userMoney = 0;
-		float changeOrCost = 0.00;
+		double userMoney = 0;
+		double changeOrCost = 0.00;
 
 		printf("Enter a drink id for the drink you want to purchase or 0 to quit: ");
 		fflush(stdout);
 		scanf("%d", &choice);
-		printf("\n");
+		//printf("\n");	//May not need this line on eclipse atleast because scanf is making a newline
 
 		if(choice == 0)
 		{
@@ -63,8 +67,8 @@ int main(void)
 		{
 			printf("Enter the amount for the purchase (up to $2.00): ");
 			fflush(stdout);
-			scanf("%f", &userMoney);
-			printf("\n");
+			scanf("%lf", &userMoney);
+			//printf("\n");	//May not need this line on eclipse atleast because scanf is making a newline
 			fflush(stdout);
 
 			while(userMoney > 2.00)
@@ -72,7 +76,7 @@ int main(void)
 				printf("The amount entered is not valid.\n");
 				printf("Enter the amount for the purchase (up to $2.00): ");
 				fflush(stdout);
-				scanf("%f", &userMoney);
+				scanf("%lf", &userMoney);
 				fflush(stdout);
 			}
 
@@ -88,7 +92,7 @@ int main(void)
 				break;
 
 			case PURCHASED:
-				printf("Your drink has been purchased. Your change is $ %.2f \n", changeOrCost);
+				printf("Your drink has been purchased. Your change is $ %.2lf \n", changeOrCost);
 				fflush(stdout);
 				break;
 
@@ -98,7 +102,7 @@ int main(void)
 				break;
 
 			case INSUFFICIENT_FUNDS:
-				printf("The amount you entered is insufficient to purchase the drink. The price is $ %.2f \n", changeOrCost);
+				printf("The amount you entered is insufficient to purchase the drink. The price is $ %.2lf \n", changeOrCost);
 				fflush(stdout);
 				break;
 
@@ -128,8 +132,6 @@ int main(void)
 
 	return EXIT_SUCCESS;
 
-	// free machine memory allocation, and the array in it
-	// set floats as doubles use L modifier
 }
 
 
