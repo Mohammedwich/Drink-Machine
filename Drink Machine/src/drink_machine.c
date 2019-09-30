@@ -189,9 +189,9 @@ float cost(DrinkMachine * theMachine, int id)
 	}
 }
 
-// Arguments (drinkMachine *, itemID, moneyInputed, change/itemPrice(if insufficient funds)), also defaults changeOrCost to 0
+// Arguments (drinkMachine *, itemID, moneyInputed, change/itemPrice(if insufficient funds))
 // Returns -2 if some error happens
-int purchase(DrinkMachine * theMachine, int id, float money, float * changeOrCost = 0.00)
+int purchase(DrinkMachine * theMachine, int id, float money, float * changeOrCost)
 {
 	if( (id < 1) || (id > theMachine->numberOfDrinkItems) )	//Invalid ID
 	{
@@ -203,12 +203,12 @@ int purchase(DrinkMachine * theMachine, int id, float money, float * changeOrCos
 	}
 	else if(money < theMachine->drinksArray[id - 1].price)
 	{
-		changeOrCost = theMachine->drinksArray[id - 1].price;
+		(*changeOrCost) = theMachine->drinksArray[id - 1].price;
 		return INSUFFICIENT_FUNDS;
 	}
 	else if(money > theMachine->drinksArray[id - 1].price)
 	{
-		changeOrCost = money - theMachine->drinksArray[id - 1].price;
+		(*changeOrCost) = money - theMachine->drinksArray[id - 1].price;
 		--(theMachine->drinksArray[id - 1].cansRemaining);
 		++(theMachine->drinksArray[id - 1].purchaseCount);
 		return PURCHASED;

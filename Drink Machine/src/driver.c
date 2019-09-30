@@ -32,10 +32,13 @@ int main(void)
 
 	// Calling nextDrink without having called firstDrink. Pointer will be nulled by nextDrink() so no need to free it
 	// Ignore "unused variable" warning. This only exists to catch the return from nextDrink.
+/*
 	DrinkItem * nextWithoutFirst = nextDrink(theMachine);
+*/
 
 	//nextDrink is called at the end of the loop after last entry has been retrieved. It should return null and display a
 	// message stating there are no more items.
+/*
 	for ( DrinkItem * drinkPointer = firstDrink(theMachine); drinkPointer != NULL; drinkPointer = nextDrink(theMachine) )
 	{
 		int drinkID = drinkPointer->id;
@@ -48,9 +51,23 @@ int main(void)
 				cansRemaining, purchaseCount);
 		fflush(stdout);
 	}
+*/
+
+	//Testing the rest of the functions
+/*
+	dumpDrinkMachine(theMachine);
+	int choices = items(theMachine);
+	int isAvailable = available(theMachine, 7); // value 2 if available
+	float price = cost(theMachine, 7);
+	//should output "8  2  1.30"
+	printf("\n%d  %d  %.2f \n", choices, isAvailable, price);
+	fflush(stdout);
+*/
 
 
-	//Test the function. Should return a success message if it worked.
+
+
+	//Test this function. Should return a success message if it worked.
 	destroyMachine(theMachine);
 
 
