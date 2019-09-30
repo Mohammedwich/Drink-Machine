@@ -31,6 +31,7 @@ int main(void)
 
 
 	// Calling nextDrink without having called firstDrink. Pointer will be nulled by nextDrink() so no need to free it
+	// Ignore "unused variable" warning. This only exists to catch the return from nextDrink.
 	DrinkItem * nextWithoutFirst = nextDrink(theMachine);
 
 	//nextDrink is called at the end of the loop after last entry has been retrieved. It should return null and display a

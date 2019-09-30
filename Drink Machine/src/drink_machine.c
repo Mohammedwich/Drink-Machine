@@ -6,6 +6,8 @@
  */
 
 #include "drink_machine.h"
+#include "DrinkAvailabilityEnum.h"
+#include "PurchaseEnum.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -134,3 +136,115 @@ DrinkItem * nextDrink(DrinkMachine * theMachine)
 	}
 }
 
+
+
+
+
+
+//Returns the number of drink types in the machine
+int items(DrinkMachine * theMachine)
+{
+	return theMachine->numberOfDrinkItems;
+}
+
+//Checks if a drink is available, returns -2 and prints message if some error happens
+int available(DrinkMachine * theMachine, int id)
+{
+	if( (id < 1) || (id > theMachine->numberOfDrinkItems) )
+	{
+		return INVALID_SELECTION;
+	}
+	else if(theMachine->drinksArray[id - 1].cansRemaining == 0)
+	{
+		return VALID_SELECTION_BUT_OUT;
+	}
+	else if(theMachine->drinksArray[id - 1].cansRemaining > 0)
+	{
+		return AVAILABLE;
+	}
+	else
+	{
+		printf("function available() encountered an error");
+		fflush(stdout);
+		return -2;
+	}
+}
+
+//Returns price of the drink, or -1 if drink ID is invalid. Returns -2 if an error happens
+float cost(DrinkMachine * theMachine, int id)
+{
+	if( (id < 1) || (id > theMachine->numberOfDrinkItems) )	//Invalid ID
+	{
+		return -1;
+	}
+	else if( (id >= 1) && (id <= theMachine->numberOfDrinkItems) )
+	{
+		return theMachine->drinksArray[id - 1].price;
+	}
+	else
+	{
+		printf("function cost() encountered an error");
+		fflush(stdout);
+		return -2;
+	}
+}
+
+// Arguments (drinkMachine *, itemID, moneyInputed, change/itemPrice(if insufficient funds)), also defaults changeOrCost to 0
+// Returns -2 if some error happens
+int purchase(DrinkMachine * theMachine, int id, float money, float * changeOrCost = 0.00)
+{
+	if( (id < 1) || (id > theMachine->numberOfDrinkItems) )	//Invalid ID
+	{
+		return INVALID;
+	}
+	else if(theMachine->drinksArray[id - 1].cansRemaining == 0)
+	{
+		return NOT_AVAILABLE;
+	}
+	else if(money < theMachine->drinksArray[id - 1].price)
+	{
+		changeOrCost = theMachine->drinksArray[id - 1].price;
+		return INSUFFICIENT_FUNDS;
+	}
+	else if(money > theMachine->drinksArray[id - 1].price)
+	{
+		changeOrCost = money - theMachine->drinksArray[id - 1].price;
+		--(theMachine->drinksArray[id - 1].cansRemaining);
+		++(theMachine->drinksArray[id - 1].purchaseCount);
+		return PURCHASED;
+	}
+	else
+	{
+		printf("function purchase() encountered an error");
+		fflush(stdout);
+		return -2;
+	}
+
+}
+
+//Displays the contents of the drinks in the machine
+void dumpDrinkMachine(DrinkMachine * theMachine)
+{
+	printf("%3s\t%12s\t%5s\t%4s\t%4s\n","ID", "Name", "Price", "Qty", "Sold");
+	fflush(stdout);
+
+	for ( DrinkItem * drinkPointer = firstDrink(theMachine); drinkPointer != NULL; drinkPointer = nextDrink(theMachine) )
+		{
+			int drinkID = drinkPointer->id;
+			char * name = drinkPointer->name;
+			float price = drinkPointer->price;
+			int cansRemaining = drinkPointer->cansRemaining;
+			int purchaseCount = drinkPointer->purchaseCount;
+
+			printf("%3d\t%12s\t%5.2f\t%4d\t%4d\n", drinkID, name, price, cansRemaining, purchaseCount);
+			fflush(stdout);
+		}
+}
+
+
+
+
+/*
+ ( (id >= 1) && (id <= theMachine->numberOfDrinkItems) && (money >= theMachine->drinksArray[id - 1]->price)
+			&& (money <= 2.00) )
+ */
